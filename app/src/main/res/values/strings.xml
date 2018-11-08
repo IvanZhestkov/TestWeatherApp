@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">MyWeatherApp</string>
+    <string name="text_empty_cities">Города еще не загружены</string>
+
+    <string-array name="cities_images">
+        <item>https://s-media-cache-ak0.pinimg.com/originals/83/03/e6/8303e609316019e0307761e34cf4dfd1.jpg</item>
+        <item>https://image.jimcdn.com/app/cms/image/transf/none/path/seaac0534d8242de6/image/i4de121adb5ee4328/version/1478676629/image.jpg</item>
+        <item>https://img-fotki.yandex.ru/get/4/22264419.3f/0_5ba02_b02dc78f_XXL.jpg</item>
+        <item>https://foto.cheb.ru/foto/foto.cheb.ru-29605.jpg</item>
+        <item>http://mamadysh.info/_ph/6/2/633075556.jpg</item>
+    </string-array>
+
+    <string-array name="cities_names">
+        <item>Арск</item>
+        <item>Зеленодольск</item>
+        <item>Волжск</item>
+        <item>Козловка</item>
+        <item>Мамадыш</item>
+    </string-array>
+</resources>
