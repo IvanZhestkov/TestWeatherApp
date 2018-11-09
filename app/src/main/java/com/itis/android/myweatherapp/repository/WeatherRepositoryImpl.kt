@@ -19,7 +19,6 @@ class WeatherRepositoryImpl : WeatherRepository {
                 ?.getWeatherByName(name, API_KEY)
                 ?.map(WeatherResult::main)
                 ?.flatMap { RewriteCache().apply(it) }
-                ?.onErrorResumeNext(ErrorSingleReadFromCache().apply(Throwable()))
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
     }

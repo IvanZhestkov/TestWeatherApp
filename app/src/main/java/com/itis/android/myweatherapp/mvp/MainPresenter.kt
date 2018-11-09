@@ -8,7 +8,7 @@ import com.itis.android.myweatherapp.repository.RepositoryProvider
 import com.itis.android.myweatherapp.utils.Five
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-
+import io.realm.Realm
 
 @InjectViewState
 class MainPresenter : MvpPresenter<MainView>() {
@@ -20,11 +20,10 @@ class MainPresenter : MvpPresenter<MainView>() {
         loadCity()
     }
 
-    @SuppressLint("CheckResult")
     fun loadCity(progressType: ProgressType = ProgressType.ListProgress) {
-        Observable.zip(
-                getTemperature("Arsk"), getTemperature("Zelenodolsk"),
-                getTemperature("Volzsk"), getTemperature("Kozlovka"),
+        compositeDisposable.addAll(Observable.zip(
+                getTemperature("Arsk"), getTemperature("Zelenodol'sk"),
+                getTemperature("Volzhsk"), getTemperature("Kozlovka"),
                 getTemperature("Mamadysh"), Five.zipFunc())
                 ?.doOnSubscribe { onLoadingStart(progressType) }
                 ?.doAfterTerminate { onLoadingFinish(progressType) }
@@ -34,7 +33,7 @@ class MainPresenter : MvpPresenter<MainView>() {
                         viewState.showItems(list)
                     }
 
-                }, { error -> viewState.handleError(error) })
+                }, { error -> viewState.handleError(error) }))
     }
 
     private fun getTemperature(name: String): Observable<Main>? {
