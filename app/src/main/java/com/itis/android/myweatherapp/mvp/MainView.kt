@@ -7,7 +7,7 @@ import io.reactivex.annotations.NonNull
 
 interface MainView : MvpView {
 
-    fun showItems(@NonNull list: ArrayList<Main?>)
+    fun showItems(@NonNull list: List<Main?>)
 
     fun handleError(error: Throwable)
 

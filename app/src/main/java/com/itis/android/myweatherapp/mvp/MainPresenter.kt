@@ -5,10 +5,13 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.itis.android.myweatherapp.model.Main
 import com.itis.android.myweatherapp.repository.RepositoryProvider
+import com.itis.android.myweatherapp.repository.cache.ErrorSingleReadFromCache
+import com.itis.android.myweatherapp.repository.cache.RewriteCache
 import com.itis.android.myweatherapp.utils.Five
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
+import java.util.concurrent.TimeUnit
 
 @InjectViewState
 class MainPresenter : MvpPresenter<MainView>() {
@@ -25,12 +28,13 @@ class MainPresenter : MvpPresenter<MainView>() {
                 getTemperature("Arsk"), getTemperature("Zelenodol'sk"),
                 getTemperature("Volzhsk"), getTemperature("Kozlovka"),
                 getTemperature("Mamadysh"), Five.zipFunc())
+                ?.flatMap { RewriteCache().apply(arrayListOf(it.first, it.second, it.third, it.fourth, it.fiveth)) }
+                ?.onErrorResumeNext(ErrorSingleReadFromCache().getMains())
                 ?.doOnSubscribe { onLoadingStart(progressType) }
                 ?.doAfterTerminate { onLoadingFinish(progressType) }
                 ?.subscribe({ temp ->
                     temp?.let {
-                        val list: ArrayList<Main?> = arrayListOf(it.first, it.second, it.third, it.fourth, it.fiveth)
-                        viewState.showItems(list)
+                        viewState.showItems(it)
                     }
 
                 }, { error -> viewState.handleError(error) }))

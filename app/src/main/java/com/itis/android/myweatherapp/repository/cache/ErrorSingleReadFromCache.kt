@@ -8,11 +8,10 @@ import io.realm.Realm
 import io.realm.RealmObject
 import io.realm.RealmResults
 
-class ErrorSingleReadFromCache : Function<Throwable, Observable<Main>> {
+class ErrorSingleReadFromCache {
 
-    override fun apply(@io.reactivex.annotations.NonNull throwable: Throwable): Observable<Main> {
+    fun getMains(): Observable<List<Main?>> {
         val realm = Realm.getDefaultInstance()
-        val results = realm.where(Main::class.java).findAll()
-        return Observable.just(realm.copyFromRealm(results.first()))
+        return Observable.fromArray(realm.where(Main::class.java).findAll())
     }
 }

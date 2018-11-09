@@ -18,7 +18,6 @@ class WeatherRepositoryImpl : WeatherRepository {
         return ApiFactory.getWeatherService()
                 ?.getWeatherByName(name, API_KEY)
                 ?.map(WeatherResult::main)
-                ?.flatMap { RewriteCache().apply(it) }
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
     }

@@ -36,7 +36,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         setUpSwipeToRefreshLayout()
     }
 
-    override fun showItems(list: ArrayList<Main?>) {
+    override fun showItems(list: List<Main?>) {
         val cities: ArrayList<City> = ArrayList()
         for (i in 0 until list.size) {
             cities.add(City(citiesNames[i], fromKtoC(list[i]?.temp), images[i]))

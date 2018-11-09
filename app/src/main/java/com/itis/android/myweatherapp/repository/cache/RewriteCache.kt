@@ -8,13 +8,19 @@ import io.reactivex.functions.Function
 import io.realm.Realm
 import io.realm.RealmObject
 
-class RewriteCache : Function<Main, Observable<Main>?> {
-    override fun apply(t: Main): Observable<Main>? {
-        Realm.getDefaultInstance().executeTransaction { realm ->
+class RewriteCache : Function<List<Main?>, Observable<List<Main?>>> {
+    override fun apply(list: List<Main?>): Observable<List<Main?>> {
+        val realm = Realm.getDefaultInstance()
+        realm.refresh()
+        realm.executeTransaction { realm ->
             realm.deleteAll()
-            realm.insertOrUpdate(t)
+            list.forEach { item ->
+                item?.id = (Math.random() * 1000).toInt()
+                realm.insertOrUpdate(item)
+            }
         }
-        return Observable.just(t)
+
+        return Observable.fromArray(list)
     }
 }
 
